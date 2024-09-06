@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Best TODO Application</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" />
+	</head>
+	<body class="bg-gray-100 text-gray-800">
+		<div class="container mx-auto p-8">
+			<h1 class="text-4xl font-bold mb-4 text-center">TODO APP</h1>
+			<div class="bg-white shadow-md rounded-lg p-6 mb-8">
+				<h2 class="text-2xl font-semibold mb-2">Add a New Todo</h2>
+				<input
+					type="text"
+					id="title"
+					placeholder="Title"
+					class="border p-2 w-full mb-4" />
+				<input
+					type="text"
+					id="description"
+					placeholder="Description"
+					class="border p-2 w-full mb-4" />
+				<button
+					onclick="addTodo()"
+					class="bg-green-500 text-white px-4 py-2 rounded-md">
+					Add Task
+				</button>
+			</div>
+			<h2 class="text-3xl mb-6">Your Todos</h2>
+			<table id="TodoTable" class="table-auto w-full text-left">
+				<thead class="bg-gray-300">
+					<tr>
+						<th class="px-4 py-2">#</th>
+						<th class="px-4 py-2">Title</th>
+						<th class="px-4 py-2">Description</th>
+						<th class="px-4 py-2">Actions</th>
+					</tr>
+				</thead>
+				<tbody class="bg-white"></tbody>
+			</table>
+		</div>
+
+		<script>
+			let serialNumber = 1;
+			let completedTasks = 0;
+			let totalTasks = 0;
+
+			function toggleTheme() {
+				document.body.classList.toggle("dark");
+			}
+
+			function addTodo() {
+				const title = document.getElementById("title").value;
+				const description = document.getElementById("description").value;
+
+				if (!title || !description) return alert("Please fill both fields.");
+
+				const TodoTableBody = document.querySelector("#TodoTable tbody");
+				const tableRow = document.createElement("tr");
+				tableRow.innerHTML = `
+                 <td class="px-4 py-2">${serialNumber++}</td>
+                 <td class="px-4 py-2">${title}</td>
+                 <td class="px-4 py-2">${description}</td>
+                 <td class="px-4 py-2">
+                     <button onclick="markCompleted(this)" class="bg-blue-500 text-white px-2 py-1 rounded-md">Complete</button>
+                 </td>
+             `;
+				TodoTableBody.appendChild(tableRow);
+
+				document.getElementById("title").value = "";
+				document.getElementById("description").value = "";
+
+				totalTasks++;
+				updateProgress();
+			}
+
+			function markCompleted(button) {
+				const row = button.parentElement.parentElement;
+				row.style.textDecoration = "line-through";
+				completedTasks++;
+				updateProgress();
+			}
+		</script>
+	</body>
+</html>
